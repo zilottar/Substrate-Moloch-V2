@@ -48,12 +48,12 @@ pub struct Round {
 // 	pub support_grants: u32,
 // }
 
-type ProjectOf<T> = Project<<T as frame_system::Trait>::AccountId>;
-type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::Balance;
-type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::NegativeImbalance;
+type ProjectOf<T> = Project<<T as frame_system::Config>::AccountId>;
+type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::NegativeImbalance;
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
-pub trait Config: frame_system::Trait {
+pub trait Config: frame_system::Config {
 	// used to generate sovereign account
 	// refer: https://github.com/paritytech/substrate/blob/743accbe3256de2fc615adcaa3ab03ebdbbb4dbd/frame/treasury/src/lib.rs#L92
 	type ModuleId: Get<ModuleId>;
@@ -62,7 +62,7 @@ pub trait Config: frame_system::Trait {
 	type AdminOrigin: EnsureOrigin<Self::Origin>;
 
     // The runtime must supply this pallet with an Event type that satisfies the pallet's requirements.
-    type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
+    type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
 
 	/// The currency trait.
 	type Currency: ReservableCurrency<Self::AccountId>;
@@ -115,7 +115,7 @@ decl_storage! {
 // Pallets use events to inform users when important changes are made.
 // https://substrate.dev/docs/en/knowledgebase/runtime/events
 decl_event!(
-	pub enum Event<T> where AccountId = <T as frame_system::Trait>::AccountId, Hash =  <T as frame_system::Trait>::Hash, {
+	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId, Hash =  <T as frame_system::Config>::Hash, {
 		/// Event documentation should end with an array that provides descriptive names for event
 		/// parameters. [project_hash, who]
 		ProjectRegistered(Hash, AccountId),
