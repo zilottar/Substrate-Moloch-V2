@@ -75,13 +75,13 @@ pub struct Proposal<AccountId> {
 	pub max_total_shares_at_yes: u128,
 }
 
-type MemberOf<T> = Member<<T as frame_system::Trait>::AccountId>;
-type ProposalOf<T> = Proposal<<T as frame_system::Trait>::AccountId>;
-type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::Balance;
-type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::NegativeImbalance;
+type MemberOf<T> = Member<<T as frame_system::Config>::AccountId>;
+type ProposalOf<T> = Proposal<<T as frame_system::Config>::AccountId>;
+type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::NegativeImbalance;
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
-pub trait Config: pallet_timestamp::Trait + frame_system::Trait {
+pub trait Config: pallet_timestamp::Config + frame_system::Config {
 	// used to generate sovereign account
 	// refer: https://github.com/paritytech/substrate/blob/743accbe3256de2fc615adcaa3ab03ebdbbb4dbd/frame/treasury/src/lib.rs#L92
 	type ModuleId: Get<ModuleId>;
@@ -90,7 +90,7 @@ pub trait Config: pallet_timestamp::Trait + frame_system::Trait {
 	type AdminOrigin: EnsureOrigin<Self::Origin>;
 
     // The runtime must supply this pallet with an Event type that satisfies the pallet's requirements.
-    type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
+    type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
 
 	/// The currency trait.
 	type Currency: ReservableCurrency<Self::AccountId>;
@@ -157,8 +157,8 @@ decl_storage! {
 // Pallets use events to inform users when important changes are made.
 // https://substrate.dev/docs/en/knowledgebase/runtime/events
 decl_event!(
-	pub enum Event<T> where AccountId = <T as frame_system::Trait>::AccountId, 
-	        Balance = <<T as Config>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::Balance {
+	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId, 
+	        Balance = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance {
 		/// Event documentation should end with an array that provides descriptive names for event
 		/// parameters. [proposalIndex, delegateKey, memberAddress, applicant, tokenTribute, sharesRequested] 
 		SubmitProposal(u128, AccountId, AccountId, AccountId, u128, u128),

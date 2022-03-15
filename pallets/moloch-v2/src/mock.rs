@@ -77,7 +77,7 @@ impl system::Trait for Test {
 parameter_types! {
 	pub const ExistentialDeposit: u64 = 1;
 }
-impl pallet_balances::Trait for Test {
+impl pallet_balances::Config for Test {
 	type MaxLocks = ();
 	type Balance = u64;
 	type Event = Event;
@@ -87,7 +87,7 @@ impl pallet_balances::Trait for Test {
 	type WeightInfo = ();
 }
 
-impl pallet_timestamp::Trait for Test {
+impl pallet_timestamp::Config for Test {
     type Moment = u64;
     type OnTimestampSet = ();
     type MinimumPeriod = ();
